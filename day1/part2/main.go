@@ -50,18 +50,17 @@ func main() {
 		reindeerTotalCalories[count] += total
 	}
 
-	sort.Ints(reindeerTotalCalories) // sort
+	sort.Sort(sort.Reverse(sort.IntSlice(reindeerTotalCalories))) // sort descending
 
-	max := 0
+	totalTop3 := 0
 	for index, totalCalories := range reindeerTotalCalories {
-		if totalCalories > 0 {
-			result := fmt.Sprintf("Reindeer %v Total Calories: %v", index, totalCalories)
-			max = totalCalories
-			fmt.Println(result)
+		if totalCalories > 0 && index < 3 {
+			totalTop3 += totalCalories
+			fmt.Println(totalTop3)
 		}
 	}
 
-	maxValue := fmt.Sprintf("Maximum Total Calories: %v", max)
-	fmt.Println(maxValue)
+	totalTop3Value := fmt.Sprintf("Top 3 Total Calories: %v", totalTop3)
+	fmt.Println(totalTop3Value)
 
 }
