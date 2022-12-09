@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var fileName = "day1/input.txt"
+var fileName = "day01/input.txt"
 
 func isError(err error) bool {
 	if err != nil {

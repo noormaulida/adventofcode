@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-var fileName = "day2/input.txt"
+var fileName = "day02/input.txt"
 
 type RockScissorPaper struct {
 	Name           string
@@ -25,21 +25,18 @@ var data = []RockScissorPaper{
 		Point:          1,
 		WinAgainst:     "scissor",
 		OpponentLetter: "A",
-		OurLetter:      "X",
 	},
 	{
 		Name:           "paper",
 		Point:          2,
 		WinAgainst:     "rock",
 		OpponentLetter: "B",
-		OurLetter:      "Y",
 	},
 	{
 		Name:           "scissor",
 		Point:          3,
 		WinAgainst:     "paper",
 		OpponentLetter: "C",
-		OurLetter:      "Z",
 	},
 }
 
@@ -65,15 +62,23 @@ func main() {
 	for sc.Scan() {
 		line := sc.Text()
 		inputLine := strings.Split(line, " ")
-		opponentLetter, ourLetter := inputLine[0], inputLine[1]
+		opponentLetter, whatWeNeedToBe := inputLine[0], inputLine[1]
 		opponent := searchByField("opponentLetter", opponentLetter)
-		our := searchByField("ourLetter", ourLetter)
+		/*
+			whatWeNeedToBe
+			X: need to be lost
+			Y: need to be draw
+			Z: need to be win
+		*/
 
-		if our.Name == opponent.Name { // draw
+		if whatWeNeedToBe == "Y" { // draw
+			our := searchByField("name", opponent.Name)
 			total += (drawPoint + our.Point)
-		} else if our.WinAgainst == opponent.Name { // win
+		} else if whatWeNeedToBe == "Z" { // win
+			our := searchByField("winAgainst", opponent.Name)
 			total += (winPoint + our.Point)
 		} else {
+			our := searchByField("name", opponent.WinAgainst)
 			total += (lostPoint + our.Point) // lost
 		}
 	}
@@ -85,10 +90,12 @@ func searchByField(field string, param string) RockScissorPaper {
 	for _, rockScissorPapper := range data {
 		var value string
 		switch field {
+		case "name":
+			value = rockScissorPapper.Name
+		case "winAgainst":
+			value = rockScissorPapper.WinAgainst
 		case "opponentLetter":
 			value = rockScissorPapper.OpponentLetter
-		case "ourLetter":
-			value = rockScissorPapper.OurLetter
 		}
 
 		if value == param {
